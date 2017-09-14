@@ -5,64 +5,46 @@ workbook.xlsx.readFile(filename)
     .then(function() {
         let worksheet = workbook.getWorksheet(1);
 
-        for(let i = 1; i <= worksheet.rowCount; i++) {
-          let row = worksheet.getRow(i);
-          let value = row.getCell(1).value.toString();
-          value = value.trim();
-          value = value.replace(/\s/g, '');
-          row.getCell(1).value = value;
-          row.commit();
-          
-        }
+        let arr = [70, 77, 78, 79];
         
         for(let i = 1; i <= worksheet.rowCount; i++) {
           let row = worksheet.getRow(i);
           let value = row.getCell(1).value.toString();
+          //value = value.trim();
+          //value = value.replace(/\s/g, '');
           let length = row.getCell(1).value.toString().length;
-
-          let arr = [70, 77, 78, 79];
-
-           if(length <= 7) {
-            //row.splice(row.actualCellCount,1, '');
+          
+          if(length <= 7) {
+            //console.log(value);
             worksheet.spliceRows(i, 1);
-            row.commit();
-           }
-
-           else if(length == 12) {
-             let sub = '55' + value.slice(0, -1).toString();
-             row.getCell(1).value = sub;
-             row.commit();
-           }
-
-           else if(length == 10) {
-              let sub = value.substr(0,2) + '9' + value.substr(2);
-              row.getCell(1).value = '55' + sub;
-              row.commit();
           }
-
-          else if(length == 8 && arr.indexOf(Number(value.substr(0,2))) > -1) {
-              row.getCell(1).value = '55' + '11' + value;
-              row.commit();
+          if(length == 8 && arr.indexOf(Number(value.substr(0,2))) > -1) {
+            //console.log('55' + '11' + value);
+           // console.log('55' + '11' + '9' + value);
+           // row.getCell(1).value = '55' + '11' + '9' + value;
           }
-
           else if(length == 8 && !arr.indexOf(Number(value.substr(0,2))) > -1) {
-            row.getCell(1).value = '55' + '11' + '9' + value;
-            row.commit();
+            //console.log('55' + '11' + '9' + value);
           }
 
-          else if(length == 11) {
-            row.getCell(1).value = '55' + value;
-            row.commit();
-          }
-          else if(length == 9) {
-            row.getCell(1).value = '55' + '11' + value;
-            row.commit();
+          if(length == 9) {
+           // console.log('55' + '11' + value);
+           // row.getCell(1).value = '55' + '11' + value;
           }
 
-          else {
-              console.log(value);
+          if(length == 10 && arr.indexOf(Number(value.substr(2,2))) > -1) {
+            //console.log('55' + value);
+            //row.getCell(1).value = '55' + value;
           }
-         
+
+          else if(length == 10 && !arr.indexOf(Number(value.substr(2,2))) > -1) {
+            let sub = value.substr(0,2) + '9' + value.substr(2);
+            console.log('55' + sub);
+          }
+          if(length == 11) {
+            console.log('55' + value);
+          }
+          row.commit();
         }
         return workbook.xlsx.writeFile('acao_today_works_18000_new.xlsx');
 });
