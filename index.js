@@ -1,5 +1,5 @@
 const Excel = require('exceljs');
-let filename = './acao_today_works_18000.xlsx';
+let filename = './file.xlsx';
 var workbook = new Excel.Workbook();
 workbook.xlsx.readFile(filename)
     .then(function() {
@@ -12,7 +12,7 @@ workbook.xlsx.readFile(filename)
           let value = row.getCell(1).value.toString();
           value = value.trim();
           value = value.replace(/\s/g, '');
-          value = value.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+          value = value.replace(/[`a-zA-Z~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
           row.getCell(1).value = value;
           row.commit();
           let length = row.getCell(1).value.toString().length;
@@ -22,13 +22,6 @@ workbook.xlsx.readFile(filename)
           //  let sub = row.getCell(1).toString;
           //  console.log('found');
          // }
-
-          
-          if(length <= 7) {
-            row.getCell(1).value = 0;
-            //console.log(value);
-            //worksheet.spliceRows(i, 1);
-          }
 
           
           if(length == 8 && arr.indexOf(Number(value.substr(0,2))) > -1) {
@@ -72,7 +65,27 @@ workbook.xlsx.readFile(filename)
             let sub = '55' + value.slice(0, -1).toString();
             row.getCell(1).value = sub;
           }
+
+          /*if(length <= 7) {
+            row.getCell(1).value = 0;
+            //console.log(value);
+            
+          }*/
           row.commit();
+        }
+
+        for(let i = 1; i <= worksheet.rowCount; i++) {
+          let row = worksheet.getRow(i);
+          let value = row.getCell(1).value.toString();
+          let length = row.getCell(1).value.toString().length;
+          
+          
+          if(length <= 7) {
+            worksheet.spliceRows(i, 1);
+            //row.getCell(1).value = 0;
+            //console.log(value);
+            
+          }
         }
         return workbook.xlsx.writeFile('acao_today_works_18000_new.xlsx');
 });
